@@ -26,4 +26,14 @@ object ProjectMetadata {
          */
         val Version = "$VersionTag${Type.suffix}"
     }
+
+    /**
+     * Information about the GitHub account that owns the project.
+     */
+    object GitHub {
+        /**
+         * The ID of the GitHub account (organization or developer) to which this project belongs.
+         */
+        const val AccountId = "rhdunn" // TODO: Modify this property.
+    }
 }
