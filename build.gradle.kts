@@ -15,3 +15,7 @@ repositories {
 application {
     mainClass.set("ApplicationKt")
 }
+
+dependencies {
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${Version.Dependency.KotlinTest}")
+}

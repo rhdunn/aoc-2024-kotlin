@@ -27,4 +27,16 @@ object Version {
          */
         const val KotlinJvm = Kotlin
     }
+
+    /**
+     * Versions of the various libraries used by the project.
+     */
+    object Dependency {
+        /**
+         * The version of the `org.jetbrains.kotlin:kotlin-test-junit` dependency.
+         *
+         * `SPDX-License-Identifier: Apache-2.0`
+         */
+        const val KotlinTest = Kotlin
+    }
 }
