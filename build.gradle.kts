@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version Version.Plugin.KotlinJvm
 }
 
+group = ProjectMetadata.GitHub.GroupId
 version = ProjectMetadata.Build.Version
 
 repositories {

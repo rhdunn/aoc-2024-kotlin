@@ -35,5 +35,10 @@ object ProjectMetadata {
          * The ID of the GitHub account (organization or developer) to which this project belongs.
          */
         const val AccountId = "rhdunn" // TODO: Modify this property.
+
+        /**
+         * The Maven group ID.
+         */
+        const val GroupId = "io.github.$AccountId"
     }
 }
