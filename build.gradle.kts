@@ -4,6 +4,8 @@ plugins {
     kotlin("jvm") version Version.Plugin.KotlinJvm
 }
 
+version = ProjectMetadata.Build.Version
+
 repositories {
     mavenCentral()
 }

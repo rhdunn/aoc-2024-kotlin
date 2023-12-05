@@ -20,5 +20,10 @@ object ProjectMetadata {
          * The build type of this project.
          */
         val Type = BuildType.Snapshot // TODO: Modify this property.
+
+        /**
+         * The artifact version ID.
+         */
+        val Version = "$VersionTag${Type.suffix}"
     }
 }
