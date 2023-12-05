@@ -2,6 +2,7 @@
 
 plugins {
     kotlin("jvm") version Version.Plugin.KotlinJvm
+    application
 }
 
 group = ProjectMetadata.GitHub.GroupId
@@ -9,4 +10,8 @@ version = ProjectMetadata.Build.Version
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass.set("ApplicationKt")
 }
