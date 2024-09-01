@@ -1,6 +1,9 @@
 # IntelliJ IDE Settings
 /.idea/
 
+# Kotlin Sessions
+/.kotlin/
+
 # Gradle Wrapper
 /gradle/
 gradlew
