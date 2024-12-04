@@ -17,12 +17,19 @@ private fun List<Int>.isSafe(): Boolean = zipWithNext().let { paired ->
     return (decreasing || increasing) && difference <= 3
 }
 
+private fun List<Int>.isSafeWithDampener(): Boolean = indices.any { i ->
+    val filtered = withIndex().filter { it.index != i }.map { it.value }
+    filtered.isSafe()
+}
+
 object Day02 : Day(2) {
     override fun part1(data: String): Int {
         return data.parseReports().count { it.isSafe() }
     }
 
     override fun part2(data: String): Int {
-        return 0
+        return data.parseReports().count {
+            it.isSafe() || it.isSafeWithDampener()
+        }
     }
 }
