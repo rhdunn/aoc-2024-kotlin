@@ -3,6 +3,7 @@
 
 - [Day 1](src/main/kotlin/io/github/rhdunn/aoc/y2024/Day01.kt)
 - [Day 2](src/main/kotlin/io/github/rhdunn/aoc/y2024/Day02.kt)
+- [Day 3](src/main/kotlin/io/github/rhdunn/aoc/y2024/Day03.kt)
 
 ## License
 Copyright (C) 2024 Reece H. Dunn
