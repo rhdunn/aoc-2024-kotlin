@@ -12,3 +12,6 @@ gradlew.bat
 # Gradle Output
 .gradle/
 build/
+
+# Advent of Code
+input.txt
