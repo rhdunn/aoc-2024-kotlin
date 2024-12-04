@@ -11,6 +11,11 @@ private fun String.parseLists(): List<Pair<Int, Int>> {
     }.toList()
 }
 
+private fun List<Pair<Int, Int>>.similarityScores(): List<Int> {
+    val counts = groupingBy { it.second }.eachCount()
+    return map { (a, _) -> a * counts.getOrDefault(a, 0) }
+}
+
 object Day01 : Day(1) {
     override fun part1(data: String): Int {
         return data.parseLists()
@@ -18,5 +23,7 @@ object Day01 : Day(1) {
             .sumOf { (a, b) -> abs(a - b) }
     }
 
-    override fun part2(data: String): Int = 0
+    override fun part2(data: String): Int {
+        return data.parseLists().similarityScores().sum()
+    }
 }
