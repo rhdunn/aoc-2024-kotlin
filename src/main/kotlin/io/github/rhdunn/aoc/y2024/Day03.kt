@@ -9,12 +9,37 @@ private fun String.parseMuls(): List<Pair<Int, Int>> {
     }.toList()
 }
 
+private sealed interface Command
+private data class Mul(val a: Int, val b: Int) : Command // mul(a,b)
+private object EnableMul : Command // do()
+private object DisableMul : Command // don't()
+
+private fun String.parseCommands(): List<Command> {
+    return """((mul)\((\d+),(\d+)\)|(do(n't)?)\(\))""".toRegex().findAll(this).mapNotNull { match ->
+        val command = match.groupValues[2].takeIf { it.isNotEmpty() } ?: match.groupValues[5]
+        when (command) {
+            "mul" -> Mul(match.groupValues[3].toInt(), match.groupValues[4].toInt())
+            "do" -> EnableMul
+            "don't" -> DisableMul
+            else -> null
+        }
+    }.toList()
+}
+
 object Day03 : Day(3) {
     override fun part1(data: String): Int {
         return data.parseMuls().sumOf { (a, b) -> a * b }
     }
 
     override fun part2(data: String): Int {
-        return 0
+        var enabled = true
+        val commands = data.parseCommands().mapNotNull { c ->
+            when (c) {
+                is Mul -> c.takeIf { enabled }
+                is EnableMul -> { enabled = true; null }
+                is DisableMul -> { enabled = false; null }
+            }
+        }
+        return commands.sumOf { (a, b) -> a * b }
     }
 }
