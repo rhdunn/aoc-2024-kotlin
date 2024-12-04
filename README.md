@@ -1,10 +1,7 @@
-# ktor-template
-> A template project for Kotlin-based web server projects
-
-> NOTE: This readme should be edited to describe your project, removing the
-> text describing the content of this template.
+# aoc-2024-kotlin
+> Advent of Code 2024 Kotlin implementation
 
 ## License
-Copyright (C) 2023 Reece H. Dunn
+Copyright (C) 2024 Reece H. Dunn
 
 SPDX-License-Identifier: [Apache-2.0](LICENSE)

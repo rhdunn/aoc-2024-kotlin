@@ -1,5 +1,5 @@
-// Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+// Copyright (C) 2024 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 
-fun main() {
-    println("Ktor template")
+fun main(args: Array<String>) {
+    println("Advent of Code 2024 Kotlin")
 }

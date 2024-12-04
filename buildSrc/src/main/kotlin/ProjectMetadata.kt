@@ -14,12 +14,12 @@ object ProjectMetadata {
         /**
          * The semantic version of the current version.
          */
-        const val VersionTag = "1.0.0" // TODO: Modify this property.
+        const val VersionTag = "1.0.0"
 
         /**
          * The build type of this project.
          */
-        val Type = BuildType.Snapshot // TODO: Modify this property.
+        val Type = BuildType.Snapshot
 
         /**
          * The artifact version ID.
@@ -34,7 +34,7 @@ object ProjectMetadata {
         /**
          * The ID of the GitHub account (organization or developer) to which this project belongs.
          */
-        const val AccountId = "rhdunn" // TODO: Modify this property.
+        const val AccountId = "rhdunn"
 
         /**
          * The Maven group ID.
