@@ -19,13 +19,17 @@ private data class Grid(val data: List<String>) {
     }
 }
 
-private fun Grid.horizontal(): Sequence<Char> = sequence {
+private fun Grid.horizontalIndices(): Sequence<Pair<Int, Int>?> = sequence {
     for (j in heights) { // top to bottom
         for (i in widths) { // left to right
-            yield(getOrNull(i, j) ?: continue)
+            yield(i to j)
         }
-        yield(' ')
+        yield(null)
     }
+}
+
+private fun Grid.horizontal(): Sequence<Char> = horizontalIndices().mapNotNull { index ->
+    if (index == null) ' ' else getOrNull(index.first, index.second)
 }
 
 private fun Grid.vertical(): Sequence<Char> = sequence {
@@ -91,6 +95,24 @@ object Day04 : Day(4) {
     }
 
     override fun part2(data: String): Int {
-        return 0
+        val grid = Grid.parse(data)
+        val candidates = grid.horizontalIndices().filterNotNull().filter { (x, y) ->
+            grid.getOrNull(x + 1, y + 1) == 'A' // all matches will have 'A' in the middle
+        }
+        val leftToRight = candidates.filter { (x, y) ->
+            when (grid.getOrNull(x, y)) {
+                'M' -> grid.getOrNull(x + 2, y + 2) == 'S' // forward
+                'S' -> grid.getOrNull(x + 2, y + 2) == 'M' // reverse
+                else -> false
+            }
+        }
+        val rightToLeft = leftToRight.filter { (x, y) ->
+            when (grid.getOrNull(x + 2, y)) {
+                'M' -> grid.getOrNull(x, y + 2) == 'S' // forward
+                'S' -> grid.getOrNull(x, y + 2) == 'M' // reverse
+                else -> false
+            }
+        }
+        return rightToLeft.count()
     }
 }
