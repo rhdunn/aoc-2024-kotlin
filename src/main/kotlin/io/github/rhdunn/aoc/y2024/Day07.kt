@@ -2,6 +2,7 @@
 package io.github.rhdunn.aoc.y2024
 
 import io.github.rhdunn.aoc.Day
+import kotlin.math.pow
 
 private fun String.parseInput(): List<Pair<Long, List<Long>>> {
     return lineSequence().filterNot { it.isEmpty() }.map { line ->
@@ -10,31 +11,38 @@ private fun String.parseInput(): List<Pair<Long, List<Long>>> {
     }.toList()
 }
 
-private enum class Operation(val symbol: Char, val apply: (Long, Long) -> Long) {
-    Add('+', { a, b -> a + b}),
-    Multiply('*', { a, b -> a * b });
+private enum class Operation(val symbol: String, val apply: (Long, Long) -> Long) {
+    Add("+", { a, b -> a + b}),
+    Multiply("*", { a, b -> a * b }),
+    Concatenate("||", { a, b -> "$a$b".toLong() });
 
-    override fun toString(): String = symbol.toString()
-}
+    override fun toString(): String = symbol
 
-// As there are only 2 operations we can count from 0 to 2^n and use the binary:
-// - 0 = add
-// - 1 = multiply
-private fun operatorCombinations(length: Int): Sequence<List<Operation>> = sequence {
-    val max = 1 shl length
-    (0 .. max).forEach { n ->
-        val operations = MutableList(length) { i ->
-            if ((n and (1 shl i)) == 0)
-                Operation.Add
-            else
-                Operation.Multiply
+    companion object {
+        fun valueOf(n: Char): Operation = when (n) {
+            '0' -> Add
+            '1' -> Multiply
+            '2' -> Concatenate
+            else -> throw IllegalArgumentException("Unknown operation value $n")
         }
-        yield(operations)
     }
 }
 
-private fun isValidInput(total: Long, numbers: List<Long>): Boolean {
-    return operatorCombinations(numbers.size - 1).any { operations ->
+private fun naryPermutations(n: Int, length: Int): Sequence<String> = sequence {
+    val max = n.toDouble().pow(length.toDouble()).toInt()
+    (0 until max).forEach { i ->
+        yield(i.toString(n).padStart(length, '0'))
+    }
+}
+
+private fun operatorCombinations(n: Int, length: Int): Sequence<List<Operation>> {
+    return naryPermutations(n, length).map { permutations ->
+        permutations.map { c -> Operation.valueOf(c) }
+    }
+}
+
+private fun isValidInput(n: Int, total: Long, numbers: List<Long>): Boolean {
+    return operatorCombinations(n, numbers.size - 1).any { operations ->
         val value = numbers.reduceIndexed { index, a, b -> operations[index - 1].apply(a, b) }
         value == total
     }
@@ -44,12 +52,16 @@ object Day07 : Day<Long>(7) {
     override fun part1(data: String): Long {
         val values = data.parseInput()
         val answer: Long = values
-            .filter { (total, numbers) -> isValidInput(total, numbers) }
+            .filter { (total, numbers) -> isValidInput(2, total, numbers) }
             .sumOf { (total, _) -> total }
         return answer
     }
 
     override fun part2(data: String): Long {
-        return 0
+        val values = data.parseInput()
+        val answer: Long = values
+            .filter { (total, numbers) -> isValidInput(3, total, numbers) }
+            .sumOf { (total, _) -> total }
+        return answer
     }
 }
