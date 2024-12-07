@@ -4,7 +4,7 @@ import io.github.rhdunn.aoc.Day
 import io.github.rhdunn.aoc.run
 import io.github.rhdunn.aoc.y2024.*
 
-val days = listOf<Day<*>>(Day01, Day02, Day03, Day04, Day05, Day06)
+val days = listOf<Day<*>>(Day01, Day02, Day03, Day04, Day05, Day06, Day07)
 
 fun main(args: Array<String>) {
     println("Advent of Code 2024 Kotlin")

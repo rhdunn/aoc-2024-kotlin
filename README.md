@@ -7,6 +7,7 @@
 - [Day 4](src/main/kotlin/io/github/rhdunn/aoc/y2024/Day04.kt)
 - [Day 5](src/main/kotlin/io/github/rhdunn/aoc/y2024/Day05.kt)
 - [Day 6](src/main/kotlin/io/github/rhdunn/aoc/y2024/Day06.kt)
+- [Day 7](src/main/kotlin/io/github/rhdunn/aoc/y2024/Day07.kt)
 
 ## License
 Copyright (C) 2024 Reece H. Dunn
