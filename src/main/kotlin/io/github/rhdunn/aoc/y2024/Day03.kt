@@ -26,7 +26,7 @@ private fun String.parseCommands(): List<Command> {
     }.toList()
 }
 
-object Day03 : Day(3) {
+object Day03 : Day<Int>(3) {
     override fun part1(data: String): Int {
         return data.parseMuls().sumOf { (a, b) -> a * b }
     }

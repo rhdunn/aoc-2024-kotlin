@@ -1,18 +1,18 @@
 // Copyright (C) 2024 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package io.github.rhdunn.aoc
 
-abstract class Day(val day: Int) {
-    abstract fun part1(data: String): Int
-    abstract fun part2(data: String): Int
+abstract class Day<T>(val day: Int) {
+    abstract fun part1(data: String): T
+    abstract fun part2(data: String): T
 
-    fun run(data: String, part: String): Int = when {
+    fun run(data: String, part: String): T = when {
         part.endsWith("-1") -> part1(data)
         part.endsWith("-2") -> part2(data)
         else -> throw IllegalArgumentException("unknown day-part: $part")
     }
 }
 
-fun List<Day>.run(dayPart: String, data: String) {
+fun List<Day<*>>.run(dayPart: String, data: String) {
     try {
         val day = dayPart.substringBefore('-').toIntOrNull()
             ?: throw IllegalArgumentException("unknown day-part: $dayPart")

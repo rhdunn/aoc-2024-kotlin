@@ -73,7 +73,7 @@ private fun String.findAllOffsets(value: String): List<Int> = indices.filter { i
     startsWith(value, i)
 }
 
-object Day04 : Day(4) {
+object Day04 : Day<Int>(4) {
     @Suppress("DuplicatedCode")
     override fun part1(data: String): Int {
         val grid = Grid.parse(data)

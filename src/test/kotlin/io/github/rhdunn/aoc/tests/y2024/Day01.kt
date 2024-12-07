@@ -6,7 +6,7 @@ import io.github.rhdunn.aoc.y2024.Day01
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class Day01Tests : DayTest(Day01) {
+class Day01Tests : DayTest<Int>(Day01) {
     @Test
     fun part1() {
         assertEquals(11, part1("day1/example.txt"))

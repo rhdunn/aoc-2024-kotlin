@@ -138,7 +138,7 @@ private fun Guard.tracePath(map: Map): Set<Guard> {
     return visited
 }
 
-object Day06 : Day(6) {
+object Day06 : Day<Int>(6) {
     override fun part1(data: String): Int {
         val map = Map.parse(data)
         var guard = Guard.location(map)

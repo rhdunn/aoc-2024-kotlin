@@ -49,7 +49,7 @@ private fun List<Int>.sortByRules(orderingRules: PageOrderingRules): List<Int> =
     }
 }
 
-object Day05 : Day(5) {
+object Day05 : Day<Int>(5) {
     override fun part1(data: String): Int {
         val (rules, lists) = data.parseInput().toUpdates()
         return lists

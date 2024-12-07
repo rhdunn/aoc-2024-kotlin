@@ -22,7 +22,7 @@ private fun List<Int>.isSafeWithDampener(): Boolean = indices.any { i ->
     filtered.isSafe()
 }
 
-object Day02 : Day(2) {
+object Day02 : Day<Int>(2) {
     override fun part1(data: String): Int {
         return data.parseReports().count { it.isSafe() }
     }

@@ -16,7 +16,7 @@ private fun List<Pair<Int, Int>>.similarityScores(): List<Int> {
     return map { (a, _) -> a * counts.getOrDefault(a, 0) }
 }
 
-object Day01 : Day(1) {
+object Day01 : Day<Int>(1) {
     override fun part1(data: String): Int {
         return data.parseLists()
             .unzip().let { (a, b) -> a.sorted().zip(b.sorted()) } // pair up
