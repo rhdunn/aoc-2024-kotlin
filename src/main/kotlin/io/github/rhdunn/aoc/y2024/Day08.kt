@@ -3,7 +3,7 @@ package io.github.rhdunn.aoc.y2024
 
 import io.github.rhdunn.aoc.Day
 
-data class Position(val x: Int, val y: Int) {
+private data class Position(val x: Int, val y: Int) {
     override fun toString(): String = "($x, $y)"
 }
 
@@ -63,6 +63,28 @@ private fun City.antinodes(a: Position, b: Position): Sequence<Position> {
         .filter { (x, y) -> x in widths && y in heights } // within city limits
 }
 
+private fun City.pointsInLine(a: Position, b: Position): Sequence<Position> = sequence {
+    val dx = b.x - a.x
+    val dy = b.y - a.y
+    if (dx == 0 && dy == 0) return@sequence
+
+    var ox = a.x
+    var oy = a.y
+    while (ox in widths && oy in heights) {
+        yield(Position(ox, oy))
+        ox += dx
+        oy += dy
+    }
+
+    ox = a.x - dx
+    oy = a.y - dy
+    while (ox in widths && oy in heights) {
+        yield(Position(ox, oy))
+        ox -= dx
+        oy -= dy
+    }
+}
+
 object Day08 : Day<Int>(8) {
     override fun part1(data: String): Int {
         val city = City.parse(data)
@@ -80,6 +102,17 @@ object Day08 : Day<Int>(8) {
     }
 
     override fun part2(data: String): Int {
-        return 0
+        val city = City.parse(data)
+        val antenna = city.antenna().groupBy { (x, y) -> city[x, y] }
+
+        val antinodes = mutableSetOf<Position>()
+        antenna.keys.forEach { strength ->
+            val candidates = antenna[strength]!!
+            candidates.forEach { a ->
+                candidates.forEach { b -> antinodes.addAll(city.pointsInLine(a, b)) }
+            }
+        }
+
+        return antinodes.size
     }
 }
