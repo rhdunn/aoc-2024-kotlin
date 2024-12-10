@@ -99,10 +99,47 @@ private fun List<DiskMapEntry>.pack(): Sequence<DiskMapEntry> = sequence {
     }
 }
 
+private fun MutableList<DiskMapEntry>.canStoreAt(capacity: Int): Int {
+    return indexOfFirst { it.id == DiskMapEntry.FreeSpace && it.length >= capacity }
+}
+
+private fun MutableList<DiskMapEntry>.packUnfragmented() {
+    val write = DiskFilePointer(size - 1, -1)
+    while (write.index >= 0) {
+        val w = get(write.index)
+        if (w.id == DiskMapEntry.FreeSpace) {
+            write.advance(this@packUnfragmented)
+            continue
+        }
+
+        val moveTo = canStoreAt(w.length)
+        if (moveTo == -1 || moveTo >= write.index) { // Can't move
+            write.advance(this@packUnfragmented)
+            continue
+        }
+
+        val r = get(moveTo)
+
+        this[write.index] = DiskMapEntry(DiskMapEntry.FreeSpace, w.length)
+        add(moveTo, w)
+
+        if (r.length == w.length) { // All space consumed
+            removeAt(moveTo + 1)
+        } else { // Space still available
+            this[moveTo + 1] = DiskMapEntry(r.id, r.length - w.length)
+        }
+
+        write.advance(this@packUnfragmented)
+    }
+}
+
 private fun Sequence<DiskMapEntry>.checksums(): Sequence<Long> = sequence {
     var i = 0
     forEach { entry ->
-        if (entry.id == DiskMapEntry.FreeSpace) return@forEach
+        if (entry.id == DiskMapEntry.FreeSpace) {
+            i += entry.length
+            return@forEach
+        }
 
         (0 until entry.length).forEach { n ->
             yield(entry.id.toLong() * i)
@@ -118,6 +155,8 @@ object Day09 : Day<Long>(9) {
     }
 
     override fun part2(data: String): Long {
-        return 0
+        val disk = data.parseDiskMap().toMutableList()
+        disk.packUnfragmented()
+        return disk.asSequence().checksums().sum()
     }
 }
