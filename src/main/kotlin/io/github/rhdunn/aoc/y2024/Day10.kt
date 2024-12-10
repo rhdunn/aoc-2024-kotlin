@@ -38,6 +38,23 @@ private fun Grid<Int>.trailHeadScore(trailHead: TrailPosition): Int {
     return score
 }
 
+private fun Grid<Int>.trailHeadRating(trailHead: TrailPosition): Int {
+    val positions = mutableListOf<TrailPosition>()
+    var rating = 0
+
+    next(trailHead).forEach { positions.add(it) }
+    while (positions.isNotEmpty()) {
+        val c = positions.removeAt(0)
+        if (c.height == 9) {
+            ++rating
+        } else {
+            next(c).forEach { positions.add(it) }
+        }
+    }
+
+    return rating
+}
+
 object Day10 : Day<Int>(10) {
     override fun part1(data: String): Int {
         val map = Grid.parse(data) { it - '0' }
@@ -49,6 +66,11 @@ object Day10 : Day<Int>(10) {
     }
 
     override fun part2(data: String): Int {
-        return 0
+        val map = Grid.parse(data) { it - '0' }
+        return map.indices
+            .filter { (headX, headY) -> map[headX, headY] == 0 }
+            .sumOf { (headX, headY) ->
+                map.trailHeadRating(TrailPosition(headX, headY, 0))
+            }
     }
 }

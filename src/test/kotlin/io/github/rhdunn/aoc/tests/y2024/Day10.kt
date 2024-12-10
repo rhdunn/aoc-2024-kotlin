@@ -11,4 +11,9 @@ class Day10Tests : DayTest<Int>(Day10) {
     fun part1() {
         assertEquals(36, part1("day10/example.txt"))
     }
+
+    @Test
+    fun part2() {
+        assertEquals(81, part2("day10/example.txt"))
+    }
 }
