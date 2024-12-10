@@ -2,6 +2,7 @@
 package io.github.rhdunn.aoc.y2024
 
 import io.github.rhdunn.aoc.Day
+import io.github.rhdunn.aoc.Direction
 import io.github.rhdunn.aoc.Grid
 
 private object Map {
@@ -12,31 +13,6 @@ private object Map {
 
     const val Unvisited = '.'
     const val Visited = 'X'
-}
-
-private enum class Direction(val symbol: Char, val dx: Int, val dy: Int) {
-    Up('^', 0, -1),
-    Down('v', 0, 1),
-    Left('<', -1, 0),
-    Right('>', 1, 0);
-
-    val turnRight: Direction
-        get() = when (this) {
-            Up -> Right
-            Right -> Down
-            Down -> Left
-            Left -> Up
-        }
-
-    companion object {
-        fun valueOfOrNull(symbol: Char): Direction? = when (symbol) {
-            Up.symbol -> Up
-            Down.symbol -> Down
-            Left.symbol -> Left
-            Right.symbol -> Right
-            else -> null
-        }
-    }
 }
 
 private data class Guard(val x: Int, val y: Int, val direction: Direction) {
