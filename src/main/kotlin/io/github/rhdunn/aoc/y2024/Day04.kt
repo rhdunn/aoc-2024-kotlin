@@ -2,22 +2,7 @@
 package io.github.rhdunn.aoc.y2024
 
 import io.github.rhdunn.aoc.Day
-
-private data class Grid(val data: List<String>) {
-    override fun toString(): String = data.joinToString("\n")
-
-    fun getOrNull(x: Int, y: Int) = data.getOrNull(y)?.getOrNull(x)
-
-    val width: Int get() = data.firstOrNull()?.length ?: 0
-    val widths: IntRange get() = 0 until width
-
-    val height: Int get() = data.size
-    val heights: IntRange get() = 0 until height
-
-    companion object {
-        fun parse(data: String): Grid = Grid(data.lines().filter { it.isNotBlank() })
-    }
-}
+import io.github.rhdunn.aoc.Grid
 
 private fun Grid.horizontalIndices(): Sequence<Pair<Int, Int>?> = sequence {
     for (j in heights) { // top to bottom
