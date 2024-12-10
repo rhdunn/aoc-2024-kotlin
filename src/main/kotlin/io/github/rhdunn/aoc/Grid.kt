@@ -1,7 +1,7 @@
 // Copyright (C) 2024 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package io.github.rhdunn.aoc
 
-data class Grid(val data: List<MutableList<Char>>) {
+data class Grid<T>(val data: List<MutableList<T>>) {
     override fun toString(): String = data.joinToString("\n") {
         it.joinToString("")
     }
@@ -9,7 +9,7 @@ data class Grid(val data: List<MutableList<Char>>) {
     operator fun get(x: Int, y: Int) = data[y][x]
     fun getOrNull(x: Int, y: Int) = data.getOrNull(y)?.getOrNull(x)
 
-    operator fun set(x: Int, y: Int, value: Char) {
+    operator fun set(x: Int, y: Int, value: T) {
         data[y][x] = value
     }
 
@@ -29,8 +29,16 @@ data class Grid(val data: List<MutableList<Char>>) {
         }
 
     companion object {
-        fun parse(data: String): Grid {
-            return Grid(data.lines().filter { it.isNotBlank() }.map { it.toMutableList() })
+        fun parse(data: String): Grid<Char> {
+            return Grid(data.lines()
+                .filter { it.isNotBlank() }
+                .map { it.toMutableList() })
+        }
+
+        fun <T> parse(data: String, transform: (Char) -> T): Grid<T> {
+            return Grid(data.lines()
+                .filter { it.isNotBlank() }
+                .map { it.map(transform).toMutableList() })
         }
     }
 }

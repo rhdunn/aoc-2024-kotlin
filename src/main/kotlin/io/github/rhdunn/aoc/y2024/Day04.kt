@@ -4,7 +4,7 @@ package io.github.rhdunn.aoc.y2024
 import io.github.rhdunn.aoc.Day
 import io.github.rhdunn.aoc.Grid
 
-private fun Grid.horizontalIndices(): Sequence<Pair<Int, Int>?> = sequence {
+private fun Grid<Char>.horizontalIndices(): Sequence<Pair<Int, Int>?> = sequence {
     for (j in heights) { // top to bottom
         for (i in widths) { // left to right
             yield(i to j)
@@ -13,11 +13,11 @@ private fun Grid.horizontalIndices(): Sequence<Pair<Int, Int>?> = sequence {
     }
 }
 
-private fun Grid.horizontal(): Sequence<Char> = horizontalIndices().mapNotNull { index ->
+private fun Grid<Char>.horizontal(): Sequence<Char> = horizontalIndices().mapNotNull { index ->
     if (index == null) ' ' else getOrNull(index.first, index.second)
 }
 
-private fun Grid.vertical(): Sequence<Char> = sequence {
+private fun Grid<Char>.vertical(): Sequence<Char> = sequence {
     for (i in widths) { // left to right
         for (j in heights) { // top to bottom
             yield(getOrNull(i, j) ?: continue)
@@ -26,7 +26,7 @@ private fun Grid.vertical(): Sequence<Char> = sequence {
     }
 }
 
-private fun Grid.diagonal(leftToRight: Boolean = true): Sequence<Char> = sequence {
+private fun Grid<Char>.diagonal(leftToRight: Boolean = true): Sequence<Char> = sequence {
     val dx = if (leftToRight) 1 else -1
     val dy = 1
     val scanX = if (leftToRight) widths.reversed() else widths

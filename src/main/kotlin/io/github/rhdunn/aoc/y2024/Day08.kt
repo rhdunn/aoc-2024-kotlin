@@ -8,7 +8,7 @@ private data class Position(val x: Int, val y: Int) {
     override fun toString(): String = "($x, $y)"
 }
 
-private fun Grid.antenna(): Sequence<Position> {
+private fun Grid<Char>.antenna(): Sequence<Position> {
     return indices
         .filter { (x, y) ->
             val loc = getOrNull(x, y)
@@ -26,13 +26,13 @@ private fun antinodeCandidates(a: Position, b: Position): Sequence<Position> = s
     yield(Position(b.x - dx, b.y - dy))
 }
 
-private fun Grid.antinodes(a: Position, b: Position): Sequence<Position> {
+private fun Grid<Char>.antinodes(a: Position, b: Position): Sequence<Position> {
     return antinodeCandidates(a, b)
         .filter { it != a && it != b } // no overlap
         .filter { (x, y) -> x in widths && y in heights } // within city limits
 }
 
-private fun Grid.pointsInLine(a: Position, b: Position): Sequence<Position> = sequence {
+private fun Grid<Char>.pointsInLine(a: Position, b: Position): Sequence<Position> = sequence {
     val dx = b.x - a.x
     val dy = b.y - a.y
     if (dx == 0 && dy == 0) return@sequence

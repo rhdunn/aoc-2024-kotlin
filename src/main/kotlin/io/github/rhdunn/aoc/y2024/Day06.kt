@@ -40,21 +40,21 @@ private enum class Direction(val symbol: Char, val dx: Int, val dy: Int) {
 }
 
 private data class Guard(val x: Int, val y: Int, val direction: Direction) {
-    constructor(x: Int, y: Int, direction: Direction, map: Grid) : this(x, y, direction) {
+    constructor(x: Int, y: Int, direction: Direction, map: Grid<Char>) : this(x, y, direction) {
         below = map.getOrNull(x, y) ?: Map.Unvisited
     }
 
     var below: Char = Map.Unvisited
         private set
 
-    fun move(map: Grid): Guard {
+    fun move(map: Grid<Char>): Guard {
         return this.canMoveTo(map).firstOrNull() ?: throw IllegalStateException("guard trapped!")
     }
 
     override fun toString(): String = "${direction.symbol}($x,$y)"
 
     companion object {
-        fun location(map: Grid): Guard {
+        fun location(map: Grid<Char>): Guard {
             return map.indices
                 .find { (x, y) -> map[x, y] in Map.Directions }!!
                 .let { (x, y) -> Guard(x, y, Direction.valueOfOrNull(map[x, y])!!) }
@@ -62,7 +62,7 @@ private data class Guard(val x: Int, val y: Int, val direction: Direction) {
     }
 }
 
-private fun Guard.canMoveTo(map: Grid): Sequence<Guard> = sequence {
+private fun Guard.canMoveTo(map: Grid<Char>): Sequence<Guard> = sequence {
     var newDirection = direction
     do {
         val newGuard = Guard(x + newDirection.dx, y + newDirection.dy, newDirection, map)
@@ -73,7 +73,7 @@ private fun Guard.canMoveTo(map: Grid): Sequence<Guard> = sequence {
     } while (newDirection != direction)
 }
 
-private fun Guard.isStuckInLoop(map: Grid, obstruction: Guard): Boolean {
+private fun Guard.isStuckInLoop(map: Grid<Char>, obstruction: Guard): Boolean {
     var guard = this
 
     val saved = map.getOrNull(obstruction.x, obstruction.y) ?: return false
@@ -94,7 +94,7 @@ private fun Guard.isStuckInLoop(map: Grid, obstruction: Guard): Boolean {
     return false // guard can exit the map
 }
 
-private fun Guard.tracePath(map: Grid): Set<Guard> {
+private fun Guard.tracePath(map: Grid<Char>): Set<Guard> {
     var guard = this
     val visited = mutableSetOf<Guard>()
     while (guard.x in map.widths && guard.y in map.heights) {
