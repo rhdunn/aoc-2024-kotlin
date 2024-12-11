@@ -2,53 +2,65 @@
 package io.github.rhdunn.aoc.y2024
 
 import io.github.rhdunn.aoc.Day
+import java.math.BigInteger
 
-private fun String.parseArrangements(): List<Long> {
+private fun String.parseArrangements(): List<BigInteger> {
     return lineSequence().filterNot { it.isEmpty() }.map { line ->
-        line.split("\\s+".toRegex()).map { it.toLong() }
+        line.split("\\s+".toRegex()).map { it.toBigInteger() }
     }.first()
 }
 
-private val Long.digits: Int get() {
+private val BigInteger.digits: Int get() {
     var digits = 0
     var current = this
-    while (current > 0L) {
+    while (current > BigInteger.ZERO) {
         ++digits
-        current /= 10
+        current /= BigInteger.TEN
     }
     return digits
 }
 
-private fun Long.split(n: Int): Pair<Long, Long> {
+private fun BigInteger.split(n: Int): Pair<BigInteger, BigInteger> {
     var value = this
-    repeat(n) { value /= 10 }
+    repeat(n) { value /= BigInteger.TEN }
 
     var mask = value
-    repeat(n) { mask *= 10 }
+    repeat(n) { mask *= BigInteger.TEN }
 
     return value to (this - mask)
 }
 
-fun blink(value: Long, blinks: Int): Int {
+private typealias BlinkCache = MutableMap<Pair<BigInteger, Int>, BigInteger>
+
+private fun blink(value: BigInteger, blinks: Int, memoized: BlinkCache): BigInteger {
     val digits = value.digits
     return when {
-        blinks == 0 -> 1
-        value == 0L -> blink(1, blinks - 1)
-        digits % 2 == 0 -> {
-            val (left, right) = value.split(digits / 2)
-            blink(left, blinks - 1) + blink(right, blinks - 1)
+        blinks == 0 -> memoized.getOrPut(value to 0) {
+            BigInteger.ONE
         }
-        else -> blink(value * 2024, blinks - 1)
+        value == BigInteger.ZERO -> memoized.getOrPut(value to blinks) {
+            blink(BigInteger.ONE, blinks - 1, memoized)
+        }
+        digits % 2 == 0 -> memoized.getOrPut(value to blinks) {
+            val (left, right) = value.split(digits / 2)
+            blink(left, blinks - 1, memoized) + blink(right, blinks - 1, memoized)
+        }
+        else -> memoized.getOrPut(value to blinks) {
+            blink(value * 2024.toBigInteger(), blinks - 1, memoized)
+        }
     }
 }
 
-object Day11 : Day<Int>(11) {
-    override fun part1(data: String): Int {
+object Day11 : Day<BigInteger>(11) {
+    override fun part1(data: String): BigInteger {
         val arrangements = data.parseArrangements()
-        return arrangements.sumOf { blink(it, 25) }
+        val memoized: BlinkCache = mutableMapOf()
+        return arrangements.sumOf { blink(it, 25, memoized) }
     }
 
-    override fun part2(data: String): Int {
-        return 0
+    override fun part2(data: String): BigInteger {
+        val arrangements = data.parseArrangements()
+        val memoized: BlinkCache = mutableMapOf()
+        return arrangements.sumOf { blink(it, 75, memoized) }
     }
 }

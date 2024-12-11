@@ -3,12 +3,13 @@ package io.github.rhdunn.aoc.tests.y2024
 
 import io.github.rhdunn.aoc.tests.DayTest
 import io.github.rhdunn.aoc.y2024.Day11
+import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class Day11Tests : DayTest<Int>(Day11) {
+class Day11Tests : DayTest<BigInteger>(Day11) {
     @Test
     fun part1() {
-        assertEquals(55312, part1("day11/example.txt"))
+        assertEquals(55312.toBigInteger(), part1("day11/example.txt"))
     }
 }
