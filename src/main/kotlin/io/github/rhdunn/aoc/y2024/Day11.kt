@@ -9,16 +9,37 @@ private fun String.parseArrangements(): List<Long> {
     }.first()
 }
 
+private val Long.digits: Int get() {
+    var digits = 0
+    var current = this
+    while (current > 0L) {
+        ++digits
+        current /= 10
+    }
+    return digits
+}
+
+private fun Long.split(n: Int): Pair<Long, Long> {
+    var value = this
+    repeat(n) { value /= 10 }
+
+    var mask = value
+    repeat(n) { mask *= 10 }
+
+    return value to (this - mask)
+}
+
 private fun List<Long>.blink(): List<Long> {
     val result = mutableListOf<Long>()
     forEach { value ->
-        val repr = value.toString()
+        val digits = value.digits
         when {
             value == 0L -> result.add(1)
 
-            repr.length % 2 == 0 -> {
-                result.add(repr.substring(0, repr.length / 2).toLong())
-                result.add(repr.substring(repr.length / 2).toLong())
+            digits % 2 == 0 -> {
+                val (left, right) = value.split(digits / 2)
+                result.add(left)
+                result.add(right)
             }
 
             else -> result.add(value * 2024)
