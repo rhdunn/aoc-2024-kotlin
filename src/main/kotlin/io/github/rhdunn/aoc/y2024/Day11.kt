@@ -29,33 +29,23 @@ private fun Long.split(n: Int): Pair<Long, Long> {
     return value to (this - mask)
 }
 
-private fun List<Long>.blink(): List<Long> {
-    val result = mutableListOf<Long>()
-    forEach { value ->
-        val digits = value.digits
-        when {
-            value == 0L -> result.add(1)
-
-            digits % 2 == 0 -> {
-                val (left, right) = value.split(digits / 2)
-                result.add(left)
-                result.add(right)
-            }
-
-            else -> result.add(value * 2024)
+fun blink(value: Long, blinks: Int): Int {
+    val digits = value.digits
+    return when {
+        blinks == 0 -> 1
+        value == 0L -> blink(1, blinks - 1)
+        digits % 2 == 0 -> {
+            val (left, right) = value.split(digits / 2)
+            blink(left, blinks - 1) + blink(right, blinks - 1)
         }
+        else -> blink(value * 2024, blinks - 1)
     }
-    return result
 }
 
 object Day11 : Day<Int>(11) {
     override fun part1(data: String): Int {
-        var arrangements = data.parseArrangements()
-        val blinks = 25
-        repeat(blinks) {
-            arrangements = arrangements.blink()
-        }
-        return arrangements.size
+        val arrangements = data.parseArrangements()
+        return arrangements.sumOf { blink(it, 25) }
     }
 
     override fun part2(data: String): Int {
