@@ -15,6 +15,14 @@ enum class Direction(val symbol: Char, val dx: Int, val dy: Int) {
             Left -> Up
         }
 
+    val opposite: Direction
+        get() = when (this) {
+            Up -> Down
+            Right -> Left
+            Down -> Up
+            Left -> Right
+        }
+
     companion object {
         fun valueOfOrNull(symbol: Char): Direction? = when (symbol) {
             Up.symbol -> Up
