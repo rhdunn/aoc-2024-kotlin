@@ -86,6 +86,32 @@ private fun Grid<Plot>.regions(): List<Region> {
     return regions
 }
 
+private fun Region.sides(): Int {
+    return Direction.entries.sumOf { wall ->
+        val walls = plots.filter { it.walls.contains(wall) }
+        val edges = when (wall) {
+            Direction.Up, Direction.Down -> walls
+                .groupBy { it.y } // group vertically
+                .mapValues { it.value.map { plot -> plot.x }.sorted() } // sort horizontally
+            Direction.Left, Direction.Right -> walls
+                .groupBy { it.x } // group horizontally
+                .mapValues { it.value.map { plot -> plot.y }.sorted() } // sort vertically
+        }
+        edges.entries.sumOf {
+            var sides = 0
+            var current = -1
+            it.value.forEach { offset ->
+                when {
+                    current == -1 -> ++sides // first plot
+                    current + 1 != offset -> ++sides // not adjacent
+                }
+                current = offset
+            }
+            sides
+        }
+    }
+}
+
 object Day12 : Day<Int>(12) {
     override fun part1(data: String): Int {
         val garden = Grid.parse(data) { Plot(it) }
@@ -94,6 +120,8 @@ object Day12 : Day<Int>(12) {
     }
 
     override fun part2(data: String): Int {
-        return 0
+        val garden = Grid.parse(data) { Plot(it) }
+        garden.mergeAdjacentWalls()
+        return garden.regions().sumOf { it.area * it.sides() }
     }
 }
