@@ -22,9 +22,9 @@ private data class Button(val label: Char, val tokenCost: Int, val dx: Int, val 
 private data class Prize(val x: Long, val y: Long) {
     companion object {
         private val FORMAT = "^Prize: X=([0-9]+), Y=([0-9]+)$".toRegex()
-        fun parseOrNull(input: String): Prize? = FORMAT.matchEntire(input)?.let {
+        fun parseOrNull(input: String, offsetX: Long, offsetY: Long): Prize? = FORMAT.matchEntire(input)?.let {
             val (x, y) = it.destructured
-            Prize(x.toLong(), y.toLong())
+            Prize(x.toLong() + offsetX, y.toLong() + offsetY)
         }
     }
 }
@@ -56,7 +56,7 @@ private data class ClawMachine(val buttonA: Button, val buttonB: Button, val pri
     val tokens: Long get() = (a * buttonA.tokenCost) + (b * buttonB.tokenCost)
 }
 
-private fun String.parseClawMachines(): List<ClawMachine> {
+private fun String.parseClawMachines(offsetX: Long, offsetY: Long): List<ClawMachine> {
     val machines = mutableListOf<ClawMachine>()
     var a: Button? = null
     var b: Button? = null
@@ -74,7 +74,7 @@ private fun String.parseClawMachines(): List<ClawMachine> {
         } else if (line.startsWith("Button B: ")) {
             b = Button.parseOrNull(line)
         } else if (line.startsWith("Prize: ")) {
-            prize = Prize.parseOrNull(line)
+            prize = Prize.parseOrNull(line, offsetX, offsetY)
         }
     }
     if (a != null && b != null && prize != null) { // No blank line at the end of the input
@@ -85,11 +85,12 @@ private fun String.parseClawMachines(): List<ClawMachine> {
 
 object Day13 : Day<Long>(13) {
     override fun part1(data: String): Long {
-        val machines = data.parseClawMachines()
+        val machines = data.parseClawMachines(0, 0)
         return machines.filter { it.isWinnable }.sumOf { it.tokens }
     }
 
     override fun part2(data: String): Long {
-        return 0
+        val machines = data.parseClawMachines(10000000000000, 10000000000000)
+        return machines.filter { it.isWinnable }.sumOf { it.tokens }
     }
 }
