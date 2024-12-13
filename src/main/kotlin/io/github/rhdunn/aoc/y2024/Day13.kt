@@ -2,17 +2,19 @@
 package io.github.rhdunn.aoc.y2024
 
 import io.github.rhdunn.aoc.Day
-import kotlin.math.abs
-import kotlin.math.roundToLong
 
-private data class Button(val label: Char, val tokenCost: Int, val dx: Int, val dy: Int) {
+private data class Matrix(val a: Long, val b: Long, val c: Long, val d: Long) {
+    val determinant: Long = (a*d) - (c*b)
+}
+
+private data class Button(val label: Char, val tokenCost: Int, val dx: Long, val dy: Long) {
     companion object {
         private val FORMAT = "^Button ([AB]): X\\+([0-9]+), Y\\+([0-9]+)$".toRegex()
         fun parseOrNull(input: String): Button? = FORMAT.matchEntire(input)?.let {
             val (label, dx, dy) = it.destructured
             when (label) {
-                "A" -> Button('A', 3, dx.toInt(), dy.toInt())
-                "B" -> Button('B', 1, dx.toInt(), dy.toInt())
+                "A" -> Button('A', 3, dx.toLong(), dy.toLong())
+                "B" -> Button('B', 1, dx.toLong(), dy.toLong())
                 else -> null
             }
         }
@@ -30,30 +32,17 @@ private data class Prize(val x: Long, val y: Long) {
 }
 
 private data class ClawMachine(val buttonA: Button, val buttonB: Button, val prize: Prize) {
-    // m is the constant terms
-    // n is the terms that are factors of the variable
+    private val numA = Matrix(prize.x, prize.y, buttonB.dx, buttonB.dy)
+    private val numB = Matrix(buttonA.dx, buttonA.dy, prize.x, prize.y)
+    private val den  = Matrix(buttonA.dx, buttonA.dy, buttonB.dx, buttonB.dy)
 
-    // solve for a
-    val aM: Double = prize.x.toDouble() / buttonA.dx
-    val aN: Double = buttonB.dx.toDouble() / buttonA.dx
-    fun a(b: Long): Long = (aM - (aN * b)).roundToLong()
-
-    // solve for b
-    val bM: Double = prize.y.toDouble() / buttonB.dy
-    val bN: Double = buttonA.dy.toDouble() / buttonB.dy
-    fun b(a: Long): Long = (bM - (bN * a)).roundToLong()
-
-    // solve for a after substituting b in terms of a
-    val cM: Double = aM - (aN * bM)
-    val cN: Double = 1 - (aN * bN)
-    val c: Double = (cM / cN)
-
-    val a: Long = c.roundToLong()
-    val b: Long = b(a)
-
-    val isWinnable: Boolean = abs(c - a) < 0.00000001
-
+    val a = numA.determinant.div(den.determinant)
+    val b = numB.determinant.div(den.determinant)
     val tokens: Long get() = (a * buttonA.tokenCost) + (b * buttonB.tokenCost)
+
+    private val aRemainder = numA.determinant.mod(den.determinant)
+    private val bRemainder = numB.determinant.mod(den.determinant)
+    val isWinnable: Boolean = aRemainder == 0L && bRemainder == 0L
 }
 
 private fun String.parseClawMachines(offsetX: Long, offsetY: Long): List<ClawMachine> {
