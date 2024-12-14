@@ -34,6 +34,14 @@ private fun List<Robot>.countInRegion(widths: IntRange, heights: IntRange): Int 
     it.position.x in widths && it.position.y in heights
 }
 
+private fun List<Robot>.findAt(x: Int, y: Int): Sequence<Robot> = asSequence().filter {
+    it.position.x == x && it.position.y == y
+}
+
+private fun List<Robot>.inUniqueArrangement() : Boolean = all {
+    findAt(it.position.x, it.position.y).count() == 1
+}
+
 // NOTE: For the puzzle input the args are [101, 103]
 object Day14 : Day<Int>(14) {
     override fun part1(data: String, args: Array<String>): Int {
@@ -56,6 +64,15 @@ object Day14 : Day<Int>(14) {
     }
 
     override fun part2(data: String, args: Array<String>): Int {
-        return 0
+        if (args.size != 2) throw IllegalArgumentException("part 14 requires width and height arguments")
+        val (width, height) = args.map { it.toInt() }
+
+        val robots = data.parseRobots()
+        var seconds = 0
+        while (!robots.inUniqueArrangement()) {
+            robots.forEach { it.move(width, height) }
+            ++seconds
+        }
+        return seconds
     }
 }
