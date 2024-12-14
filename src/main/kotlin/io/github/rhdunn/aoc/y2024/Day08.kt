@@ -3,10 +3,7 @@ package io.github.rhdunn.aoc.y2024
 
 import io.github.rhdunn.aoc.Day
 import io.github.rhdunn.aoc.Grid
-
-private data class Position(val x: Int, val y: Int) {
-    override fun toString(): String = "($x, $y)"
-}
+import io.github.rhdunn.aoc.Position
 
 private fun Grid<Char>.antenna(): Sequence<Position> {
     return indices
