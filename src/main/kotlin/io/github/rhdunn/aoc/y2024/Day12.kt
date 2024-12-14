@@ -113,13 +113,13 @@ private fun Region.sides(): Int {
 }
 
 object Day12 : Day<Int>(12) {
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         val garden = Grid.parse(data) { Plot(it) }
         garden.mergeAdjacentWalls()
         return garden.regions().sumOf { it.area * it.perimeter }
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         val garden = Grid.parse(data) { Plot(it) }
         garden.mergeAdjacentWalls()
         return garden.regions().sumOf { it.area * it.sides() }

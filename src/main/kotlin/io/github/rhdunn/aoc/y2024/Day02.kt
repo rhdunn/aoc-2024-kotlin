@@ -23,11 +23,11 @@ private fun List<Int>.isSafeWithDampener(): Boolean = indices.any { i ->
 }
 
 object Day02 : Day<Int>(2) {
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         return data.parseReports().count { it.isSafe() }
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         return data.parseReports().count {
             it.isSafe() || it.isSafeWithDampener()
         }

@@ -73,12 +73,12 @@ private fun String.parseClawMachines(offsetX: Long, offsetY: Long): List<ClawMac
 }
 
 object Day13 : Day<Long>(13) {
-    override fun part1(data: String): Long {
+    override fun part1(data: String, args: Array<String>): Long {
         val machines = data.parseClawMachines(0, 0)
         return machines.filter { it.isWinnable }.sumOf { it.tokens }
     }
 
-    override fun part2(data: String): Long {
+    override fun part2(data: String, args: Array<String>): Long {
         val machines = data.parseClawMachines(10000000000000, 10000000000000)
         return machines.filter { it.isWinnable }.sumOf { it.tokens }
     }

@@ -27,11 +27,11 @@ private fun String.parseCommands(): List<Command> {
 }
 
 object Day03 : Day<Int>(3) {
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         return data.parseMuls().sumOf { (a, b) -> a * b }
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         var enabled = true
         val commands = data.parseCommands().mapNotNull { c ->
             when (c) {

@@ -50,14 +50,14 @@ private fun List<Int>.sortByRules(orderingRules: PageOrderingRules): List<Int> =
 }
 
 object Day05 : Day<Int>(5) {
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         val (rules, lists) = data.parseInput().toUpdates()
         return lists
             .filter { it.checkOrder(rules) }
             .sumOf { pages -> pages[pages.size / 2] }
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         val (rules, lists) = data.parseInput().toUpdates()
         return lists
             .filterNot { it.checkOrder(rules) }

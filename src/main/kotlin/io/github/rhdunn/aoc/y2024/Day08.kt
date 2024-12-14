@@ -55,7 +55,7 @@ private fun Grid<Char>.pointsInLine(a: Position, b: Position): Sequence<Position
 }
 
 object Day08 : Day<Int>(8) {
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         val city = Grid.parse(data)
         val antenna = city.antenna().groupBy { (x, y) -> city[x, y] }
 
@@ -70,7 +70,7 @@ object Day08 : Day<Int>(8) {
         return antinodes.size
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         val city = Grid.parse(data)
         val antenna = city.antenna().groupBy { (x, y) -> city[x, y] }
 

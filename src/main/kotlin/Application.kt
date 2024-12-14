@@ -27,5 +27,5 @@ fun main(args: Array<String>) {
         return
     }
 
-    days.run(task, data)
+    days.run(task, data, args.sliceArray(2 until args.size))
 }

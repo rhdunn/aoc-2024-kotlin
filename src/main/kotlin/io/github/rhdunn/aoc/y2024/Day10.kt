@@ -56,7 +56,7 @@ private fun Grid<Int>.trailHeadRating(trailHead: TrailPosition): Int {
 }
 
 object Day10 : Day<Int>(10) {
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         val map = Grid.parse(data) { it - '0' }
         return map.indices
             .filter { (headX, headY) -> map[headX, headY] == 0 }
@@ -65,7 +65,7 @@ object Day10 : Day<Int>(10) {
             }
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         val map = Grid.parse(data) { it - '0' }
         return map.indices
             .filter { (headX, headY) -> map[headX, headY] == 0 }

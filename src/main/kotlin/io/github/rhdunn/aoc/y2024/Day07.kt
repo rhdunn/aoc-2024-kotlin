@@ -49,7 +49,7 @@ private fun isValidInput(n: Int, total: Long, numbers: List<Long>): Boolean {
 }
 
 object Day07 : Day<Long>(7) {
-    override fun part1(data: String): Long {
+    override fun part1(data: String, args: Array<String>): Long {
         val values = data.parseInput()
         val answer: Long = values
             .filter { (total, numbers) -> isValidInput(2, total, numbers) }
@@ -57,7 +57,7 @@ object Day07 : Day<Long>(7) {
         return answer
     }
 
-    override fun part2(data: String): Long {
+    override fun part2(data: String, args: Array<String>): Long {
         val values = data.parseInput()
         val answer: Long = values
             .filter { (total, numbers) -> isValidInput(3, total, numbers) }

@@ -149,12 +149,12 @@ private fun Sequence<DiskMapEntry>.checksums(): Sequence<Long> = sequence {
 }
 
 object Day09 : Day<Long>(9) {
-    override fun part1(data: String): Long {
+    override fun part1(data: String, args: Array<String>): Long {
         val disk = data.parseDiskMap().toList()
         return disk.pack().checksums().sum()
     }
 
-    override fun part2(data: String): Long {
+    override fun part2(data: String, args: Array<String>): Long {
         val disk = data.parseDiskMap().toMutableList()
         disk.packUnfragmented()
         return disk.asSequence().checksums().sum()

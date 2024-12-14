@@ -17,13 +17,13 @@ private fun List<Pair<Int, Int>>.similarityScores(): List<Int> {
 }
 
 object Day01 : Day<Int>(1) {
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         return data.parseLists()
             .unzip().let { (a, b) -> a.sorted().zip(b.sorted()) } // pair up
             .sumOf { (a, b) -> abs(a - b) }
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         return data.parseLists().similarityScores().sum()
     }
 }

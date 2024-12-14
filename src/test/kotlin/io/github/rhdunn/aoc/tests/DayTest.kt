@@ -9,6 +9,6 @@ open class DayTest<T>(val day: Day<T>) {
         return resource.bufferedReader().use { it.readText() }
     }
 
-    fun part1(filename: String): T = day.part1(load(filename))
-    fun part2(filename: String): T = day.part2(load(filename))
+    fun part1(filename: String, args: Array<String> = emptyArray()): T = day.part1(load(filename), args)
+    fun part2(filename: String, args: Array<String> = emptyArray()): T = day.part2(load(filename), args)
 }

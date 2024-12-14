@@ -52,13 +52,13 @@ private fun blink(value: BigInteger, blinks: Int, memoized: BlinkCache): BigInte
 }
 
 object Day11 : Day<BigInteger>(11) {
-    override fun part1(data: String): BigInteger {
+    override fun part1(data: String, args: Array<String>): BigInteger {
         val arrangements = data.parseArrangements()
         val memoized: BlinkCache = mutableMapOf()
         return arrangements.sumOf { blink(it, 25, memoized) }
     }
 
-    override fun part2(data: String): BigInteger {
+    override fun part2(data: String, args: Array<String>): BigInteger {
         val arrangements = data.parseArrangements()
         val memoized: BlinkCache = mutableMapOf()
         return arrangements.sumOf { blink(it, 75, memoized) }

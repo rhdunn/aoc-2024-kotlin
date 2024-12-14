@@ -60,7 +60,7 @@ private fun String.findAllOffsets(value: String): List<Int> = indices.filter { i
 
 object Day04 : Day<Int>(4) {
     @Suppress("DuplicatedCode")
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         val grid = Grid.parse(data)
         val horizontal = grid.horizontal().joinToString("")
         val vertical = grid.vertical().joinToString("")
@@ -79,7 +79,7 @@ object Day04 : Day<Int>(4) {
         return matches
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         val grid = Grid.parse(data)
         val candidates = grid.horizontalIndices().filterNotNull().filter { (x, y) ->
             grid.getOrNull(x + 1, y + 1) == 'A' // all matches will have 'A' in the middle

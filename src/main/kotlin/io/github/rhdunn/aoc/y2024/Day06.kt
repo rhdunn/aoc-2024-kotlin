@@ -84,7 +84,7 @@ private fun Guard.tracePath(map: Grid<Char>): Set<Guard> {
 }
 
 object Day06 : Day<Int>(6) {
-    override fun part1(data: String): Int {
+    override fun part1(data: String, args: Array<String>): Int {
         val map = Grid.parse(data)
         var guard = Guard.location(map)
 
@@ -102,7 +102,7 @@ object Day06 : Day<Int>(6) {
         return visited
     }
 
-    override fun part2(data: String): Int {
+    override fun part2(data: String, args: Array<String>): Int {
         val map = Grid.parse(data)
         var guard = Guard.location(map)
         val paths = guard.tracePath(map)
